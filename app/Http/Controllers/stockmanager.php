@@ -82,7 +82,23 @@ class stockmanager extends Controller
         
     }
 
-
+    public function addsector(Request $request)
+    {      
+        $validator = Validator::make($request->all(), [
+                        'name' => 'required|string|max:255'                        
+                ]);
+ 
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+ 
+        $data = Sector::create([
+                    'name' => $request->get('name')                    
+                ]);
+       
+            return response()->json($data);
+        
+    }
 
      
     public function find(Request $request)
