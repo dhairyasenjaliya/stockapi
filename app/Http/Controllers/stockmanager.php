@@ -93,10 +93,9 @@ class stockmanager extends Controller
         }
  
         $data = Sector::create([
-                    'name' => $request->get('name')                    
+                    'name' => $request->get('name')   
                 ]);
-       
-            return response()->json($data);
+        return response()->json($data->id);
         
     }
 
