@@ -24,5 +24,5 @@ Route::post('addstock','stockmanager@add');
 Route::post('addsector','stockmanager@addsector');
 
 
-Route::post('getsectors','stockmanager@getsector');
+Route::get('getsectors','stockmanager@getsector');
 Route::post('sectorwisesotock','stockmanager@sectorwisesotock');
