@@ -98,12 +98,36 @@ class stockmanager extends Controller
         return response()->json($data->id);
         
     }
-
+    
      
-    public function find(Request $request)
+    public function getsector()
+    {            
+        $data = Sector::all('name');
+        return response()->json($data);
+    }
+
+    public function sectorwisesotock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
-            'search' => 'required'          
+            'sector' => 'required' 
+        ]);
+ 
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+
+        $getsec = $request->get('sector');  
+        $sector = Sector::where('name',$getsec)->get(['id']);
+         
+        $query2 = Stock::where('sector',$sector->toArray())->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
+        return response()->json($query2); 
+    }
+
+    public function findstock(Request $request)
+    {      
+        $validator = Validator::make($request->all(), [
+            'search' => 'required',
+            'exchange' => 'required'
         ]);
  
         if($validator->fails()) {
@@ -111,8 +135,9 @@ class stockmanager extends Controller
         }
 
         $search = $request->get('search'); 
-
-        $query2 = Stock::where('company_name',$search)->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
+        $exchange = $request->get('exchange'); 
+ 
+        $query2 = Stock::where('exchange',$exchange)->where('company_name',$search)->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
 
         if($query2 == '[]'){  
             return response()->json('No Stock Found !!');  
