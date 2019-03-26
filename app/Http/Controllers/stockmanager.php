@@ -126,7 +126,7 @@ class stockmanager extends Controller
     public function findstock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
-            'search' => 'required',
+            'searchstring' => 'required',
             'exchange' => 'required'
         ]);
  
@@ -134,7 +134,7 @@ class stockmanager extends Controller
             return response()->json([ 'error'=> $validator->messages()], 401);
         }
 
-        $search = $request->get('search'); 
+        $search = $request->get('searchstring'); 
         $exchange = $request->get('exchange'); 
  
         $query2 = Stock::where('exchange',$exchange)->where('company_name',$search)->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
