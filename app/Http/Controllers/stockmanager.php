@@ -109,14 +109,14 @@ class stockmanager extends Controller
     public function sectorwisesotock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
-            'sector' => 'required' 
+            'sector_id' => 'required' 
         ]);
  
         if($validator->fails()) {
             return response()->json([ 'error'=> $validator->messages()], 401);
         }
 
-        $getsec = $request->get('sector');  
+        $getsec = $request->get('sector_id');  
         $sector = Sector::where('id',$getsec)->get(['id']);
          
         $query2 = Stock::where('sector',$sector->toArray())->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
