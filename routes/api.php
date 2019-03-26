@@ -18,11 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+// Stock API
+
 Route::post('getstock','stockmanager@show');
 Route::post('findstock','stockmanager@findstock');
 Route::post('addstock','stockmanager@add');
-Route::post('addsector','stockmanager@addsector');
+Route::post('favcounter','stockmanager@fav');
 
+// Sector API 
 
 Route::get('getsectors','stockmanager@getsector');
+Route::post('addsector','stockmanager@addsector');
 Route::post('sectorwisesotock','stockmanager@sectorwisesotock');

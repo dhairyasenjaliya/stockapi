@@ -26,7 +26,7 @@ class CreateStocksTable extends Migration
             $table->string('2_Week');
             $table->string('1_Week'); 
             $table->string('price');
-            $table->integer('fav_counter')->nullable();
+            $table->integer('fav_counter')->default('0');
             $table->timestamps();
             $table->foreign('sector')
             ->references('id')->on('sectors')

@@ -5,6 +5,8 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Stock;
 use App\Sector;
+use DB;
+
 class stockmanager extends Controller
 {
     public function show()
@@ -12,38 +14,7 @@ class stockmanager extends Controller
         $a = Stock::with('Sector')->get();  
         return $a;
     }
-    
-    // public function add(Request $request)
-    // {         
-    //         $validator = Validator::make($request->all(), [
-    //             'company_name' => 'required|string|max:255|unique:company_name',
-    //             'exchange' => 'required',
-    //             'sector'=> 'required',                  
-    //             // '1_Year' => 'required',
-    //             // '9_Month'=> 'required',
-    //             // '6_Month' => 'required',
-    //             // '3_Month'=> 'required',
-    //             // '1_Month' => 'required',
-    //             // '2_Week'=> 'required',
-    //             // '1_Week' => 'required',
-    //             'price'=> 'required'
-    //     ]);
-    
-    //     if ($validator->fails()) {
-    //         return response()->json($validator->errors());
-    //     } 
-
-    //     // $data = Stock::create([
-    //     //     'company_name' => $request->get('company_name'),
-    //     //     'exchange' => $request->get('exchange'), 
-    //     //     'sector' => $request->get('sector'),
-    //     //     'price' => $request->get('price'),  
-    //     // ]);
-         
-    //     return Response::json('success',$data);
-    // }
-        
-
+  
     public function add(Request $request)
     {      
         $validator = Validator::make($request->all(), [
@@ -76,8 +47,7 @@ class stockmanager extends Controller
                     '2_Week'=> $request->get('2_Week'),
                     '1_Week' => $request->get('1_Week'),
                     'price' => $request->get('price'),  
-                ]);
-       
+                ]);       
             return response()->json($data);
         
     }
@@ -85,7 +55,7 @@ class stockmanager extends Controller
     public function addsector(Request $request)
     {      
         $validator = Validator::make($request->all(), [
-                        'name' => 'required|string|max:255'                        
+                        'name' => 'required|string|max:255' 
                 ]);
  
         if($validator->fails()) {
@@ -105,6 +75,24 @@ class stockmanager extends Controller
         $data = Sector::all('id','name');
         return response()->json($data);
     }
+
+    public function fav(Request $request)
+    {    
+        $validator = Validator::make($request->all(), [
+            'stock' => 'required' 
+        ]);
+ 
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+        
+        $stock = $request->stock;
+        $fav_counter = Stock::where('company_name',$stock)->get('fav_counter')->toArray() ; 
+        
+
+        $data = Stock::where('company_name',$stock)->update(['fav_counter' => DB::raw('fav_counter + 1')  ]);
+        return response()->json('liked'); 
+    } 
 
     public function sectorwisesotock(Request $request)
     {      
