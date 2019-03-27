@@ -16,40 +16,14 @@ class stockmanager extends Controller
     }
   
     public function add(Request $request)
-    {      
-        $validator = Validator::make($request->all(), [
-                        'company_name' => 'required|string|max:255',
-                        'exchange' => 'required',
-                        'sector'=> 'required',                  
-                        '1_Year' => 'required',
-                        '9_Month'=> 'required',
-                        '6_Month' => 'required',
-                        '3_Month'=> 'required',
-                        '1_Month' => 'required',
-                        '2_Week'=> 'required',
-                        '1_Week' => 'required',
-                        'price'=> 'required'
-                ]);
- 
-        if($validator->fails()) {
-            return response()->json([ 'error'=> $validator->messages()], 401);
-        }
- 
-        $data = Stock::create([
-                    'company_name' => $request->get('company_name'),
-                    'exchange' => $request->get('exchange'), 
-                    'sector' => $request->get('sector'),
-                    '1_Year' => $request->get('1_Year'),
-                    '9_Month'=> $request->get('9_Month'),
-                    '6_Month' => $request->get('6_Month'),
-                    '3_Month'=> $request->get('3_Month'),
-                    '1_Month' => $request->get('1_Month'),
-                    '2_Week'=> $request->get('2_Week'),
-                    '1_Week' => $request->get('1_Week'),
-                    'price' => $request->get('price'),  
-                ]);       
-            return response()->json($data);
-        
+    {  
+        $data = json_encode($request->data ) ;
+
+        $val = json_decode($data,true);
+
+        Stock::insert($val);
+
+        return response()->json(count($val).'--Stock Added');  
     }
 
     public function addsector(Request $request)
@@ -76,6 +50,13 @@ class stockmanager extends Controller
         return response()->json($data);
     }
 
+
+    public function all()
+    {            
+        $data = Stock::all();
+        return response()->json($data);  
+    }
+
     public function fav(Request $request)
     {    
         $validator = Validator::make($request->all(), [
@@ -87,8 +68,7 @@ class stockmanager extends Controller
         }
         
         $stock = $request->stock;
-        $fav_counter = Stock::where('company_name',$stock)->get('fav_counter')->toArray() ; 
-        
+        $fav_counter = Stock::where('company_name',$stock)->get('fav_counter')->toArray() ;     
 
         $data = Stock::where('company_name',$stock)->update(['fav_counter' => DB::raw('fav_counter + 1')  ]);
         return response()->json('liked'); 

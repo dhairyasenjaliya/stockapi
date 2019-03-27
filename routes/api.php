@@ -24,6 +24,7 @@ Route::post('getstock','stockmanager@show');
 Route::post('findstock','stockmanager@findstock');
 Route::post('addstock','stockmanager@add');
 Route::post('favcounter','stockmanager@fav');
+Route::get('getallstock','stockmanager@all');
 
 // Sector API 
 
