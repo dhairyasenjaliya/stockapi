@@ -31,3 +31,5 @@ Route::get('getallstock','stockmanager@all');
 Route::get('getsectors','stockmanager@getsector');
 Route::post('addsector','stockmanager@addsector');
 Route::post('sectorwisesotock','stockmanager@sectorwisesotock');
+
+Route::post('findsector','stockmanager@findsector');

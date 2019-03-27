@@ -43,6 +43,28 @@ class stockmanager extends Controller
         
     }
     
+    public function findsector(Request $request)
+    {            
+        $validator = Validator::make($request->all(), [
+            'searchstring' => 'required' 
+        ]);
+ 
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+
+        $search = $request->get('searchstring');  
+ 
+        $query2 = Sector::where('name',$search)->get(); 
+
+        if($query2 == '[]'){  
+            return response()->json('No Sector Exists!!');  
+        }
+        else{
+            return response()->json($query2);
+        } 
+    
+    }
      
     public function getsector()
     {            
@@ -53,7 +75,7 @@ class stockmanager extends Controller
 
     public function all()
     {            
-        $data = Stock::all();
+        $data = Stock::all(); //paginate(10)
         return response()->json($data);  
     }
 
