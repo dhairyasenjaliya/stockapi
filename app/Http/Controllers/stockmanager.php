@@ -109,7 +109,7 @@ class stockmanager extends Controller
         $getsec = $request->get('sector_id');  
         $sector = Sector::where('id',$getsec)->get(['id']);
          
-        $query2 = Stock::where('sector',$sector->toArray())->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
+        $query2 = Stock::where('sector',$sector->toArray())->distinct()->get();  
         return response()->json($query2); 
     }
 
