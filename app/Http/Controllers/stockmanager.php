@@ -136,4 +136,27 @@ class stockmanager extends Controller
             return response()->json($query2);
         } 
     }
+
+
+    public function searchstock(Request $request)
+    {      
+        $validator = Validator::make($request->all(), [
+            'searchstring' => 'required'  
+        ]);
+ 
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+
+        $search = $request->get('searchstring');  
+ 
+        $query2 = Stock::where('company_name', 'like', '%'.$search.'%')->get('company_name');       
+
+        if($query2 == '[]'){  
+            return response()->json('No Stock Found !!');  
+        }
+        else{
+            return response()->json($query2);
+        } 
+    }
 }
