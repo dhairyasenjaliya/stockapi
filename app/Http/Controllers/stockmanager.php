@@ -113,7 +113,7 @@ class stockmanager extends Controller
         return response()->json($query2); 
     }
 
-    public function findstock(Request $request)
+    public function findallstock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
             'searchstring' => 'required' 
