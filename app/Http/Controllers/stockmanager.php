@@ -58,7 +58,7 @@ class stockmanager extends Controller
         $query2 = Sector::where('name',$search)->get(); 
 
         if($query2 == '[]'){  
-            return response()->json('No Sector Exists!!');  
+            return response()->json($query2);  
         }
         else{
             return response()->json($query2);
@@ -128,7 +128,7 @@ class stockmanager extends Controller
         $query2 =  Stock::where('company_name', 'like', '%'.$search.'%')->distinct()->get();       
 
         if($query2 == '[]'){  
-            return response()->json('No Stock Found !!');  
+            return response()->json($query2);  
         }
         else{
             return response()->json($query2);
@@ -152,7 +152,7 @@ class stockmanager extends Controller
         $query2 = Stock::where('exchange','like', '%'.$exchange.'%' )->where('company_name', 'like', '%'.$search.'%')->distinct()->get();          
 
         if($query2 == '[]'){  
-            return response()->json('No Stock Found !!');  
+            return response()->json($query2);  
         }
         else{
             return response()->json($query2);
