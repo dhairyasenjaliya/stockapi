@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Stock API
 
 Route::post('getstock','stockmanager@show');
-// Route::post('findstock','stockmanager@findstock');
+Route::post('findallstock','stockmanager@findallstock');
 Route::post('searchstock','stockmanager@searchstock');
 Route::post('addstock','stockmanager@add');
 Route::post('favcounter','stockmanager@fav');

@@ -113,29 +113,27 @@ class stockmanager extends Controller
         return response()->json($query2); 
     }
 
-    // public function findstock(Request $request)
-    // {      
-    //     $validator = Validator::make($request->all(), [
-    //         'searchstring' => 'required',
-    //         'exchange' => 'required'
-    //     ]);
+    public function findstock(Request $request)
+    {      
+        $validator = Validator::make($request->all(), [
+            'searchstring' => 'required' 
+        ]);
  
-    //     if($validator->fails()) {
-    //         return response()->json([ 'error'=> $validator->messages()], 401);
-    //     }
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
 
-    //     $search = $request->get('searchstring'); 
-    //     $exchange = $request->get('exchange'); 
+        $search = $request->get('searchstring'); 
  
-    //     $query2 = Stock::where('exchange',$exchange)->where('company_name', 'like', '%'.$search.'%')->distinct()->get(['company_name','exchange','sector','1_Year','9_Month','6_Month','3_Month','1_Month','2_Week','1_Week','price']);       
+        $query2 =  Stock::where('company_name', 'like', '%'.$search.'%')->distinct()->get();       
 
-    //     if($query2 == '[]'){  
-    //         return response()->json('No Stock Found !!');  
-    //     }
-    //     else{
-    //         return response()->json($query2);
-    //     } 
-    // }
+        if($query2 == '[]'){  
+            return response()->json('No Stock Found !!');  
+        }
+        else{
+            return response()->json($query2);
+        } 
+    }
 
 
     public function searchstock(Request $request)
@@ -151,7 +149,7 @@ class stockmanager extends Controller
 
         $search = $request->get('searchstring');  
         $exchange = $request->get('exchange');
-        $query2 = Stock::where('exchange','like', '%'.$exchange.'%' )->where('company_name', 'like', '%'.$search.'%')->distinct()->get(['id','company_name','exchange']);          
+        $query2 = Stock::where('exchange','like', '%'.$exchange.'%' )->where('company_name', 'like', '%'.$search.'%')->distinct()->get();          
 
         if($query2 == '[]'){  
             return response()->json('No Stock Found !!');  
