@@ -100,8 +100,7 @@ class stockmanager extends Controller
     {    
         $validator = Validator::make($request->all(), [
             'sector_id' => 'required',
-            'time_frame'=>'required' ,  // 1_year_price check all in that 
-            'investmentamount'=>'required',
+            'time_frame'=>'required' ,  // 1_year_price check all in that  
             'exchange' => 'required' 
         ]);  
 
@@ -119,8 +118,8 @@ class stockmanager extends Controller
     {      
         $validator = Validator::make($request->all(), [
             'sector_id' => 'required',
-            'time_frame'=>'required' ,
-            'investmentamount'=>'required' 
+            'time_frame'=>'required',
+            'exchange'=>'required' ,
         ]);
         //Flag for low return high return
  
@@ -135,11 +134,11 @@ class stockmanager extends Controller
         $flag = $request->get('flag');
 
         if($flag =='true' || $flag == true){
-            $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'asc')->get(); 
+            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'asc')->get(); 
             return response()->json($query2); 
         }
         if($flag =='false' || $flag == false){
-            $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'desc')->get(); 
+            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'desc')->get(); 
             return response()->json($query2);
         }
     }
