@@ -62,8 +62,7 @@ class stockmanager extends Controller
         }
         else{
             return response()->json($query2);
-        } 
-    
+        }  
     }
      
     public function getsector()
@@ -98,18 +97,30 @@ class stockmanager extends Controller
 
 
     public function bestreturnstock(Request $request)
-    {      
-        $stock = Stock::all()->where('price','<','50')->take(5); 
-        return response()->json($stock);
-    }
+    {    
+        $validator = Validator::make($request->all(), [
+            'sector_id' => 'required',
+            'time_frame'=>'required' ,  // 1_year_price check all in that 
+            'investmentamount'=>'required',
+            'exchange' => 'required' 
+        ]);  
 
+        $lessthanfifty = Stock::all()->where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->take(10); 
+
+        $fiftytohundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->take(10); 
+        $lessthanhundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10); 
+        $grtthanfivehundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>','500')->take(10); 
+
+        return response()->json(['Fiftyless'=>$lessthanfifty, 'Fiftytohundred'=>$fiftytohundred , 'lessthanhundred'=>$lessthanhundred, 'grtthanfivehundred'=>$grtthanfivehundred]);
+        // return response()->json($lessthanfifty);
+    }  
 
     public function sectorwisesotock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
             'sector_id' => 'required',
             'time_frame'=>'required' ,
-            'flag'=>'required' 
+            'investmentamount'=>'required' 
         ]);
         //Flag for low return high return
  
@@ -123,11 +134,11 @@ class stockmanager extends Controller
         $time_frame = $request->get('time_frame');
         $flag = $request->get('flag');
 
-        if($flag=='true' || $flag== true){
+        if($flag =='true' || $flag == true){
             $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'asc')->get(); 
             return response()->json($query2); 
         }
-        if($flag=='false' || $flag== false){
+        if($flag =='false' || $flag == false){
             $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'desc')->get(); 
             return response()->json($query2);
         }
@@ -153,8 +164,7 @@ class stockmanager extends Controller
         else{
             return response()->json($query2);
         } 
-    }
-
+    } 
 
     public function searchstock(Request $request)
     {      
@@ -177,6 +187,5 @@ class stockmanager extends Controller
         else{
             return response()->json($query2);
         } 
-    }
-    
+    } 
 }
