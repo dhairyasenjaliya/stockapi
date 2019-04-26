@@ -97,29 +97,11 @@ class stockmanager extends Controller
     } 
 
 
-    // public function sectorwisesotock(Request $request)
-    // {      
-    //     $validator = Validator::make($request->all(), [
-    //         'sector_id' => 'required',
-    //         'time_frame'=>'required' ,
-    //         'flag'=>'required' 
-    //     ]);
-    //     //Flag for low return high return
- 
-    //     if($validator->fails()) {
-    //         return response()->json([ 'error'=> $validator->messages()], 401);
-    //     } 
-
-    //     $getsec = $request->get('sector_id');  
-    //     $sector = Sector::where('id',$getsec)->get(['id']);
-        
-    //     $time_frame = $request->get('time_frame');
-    //     $flag = $request->get('flag');
-         
-    //     $query2 = Stock::where('sector',$sector->toArray())->distinct()->get();  
-
-    //     return response()->json($query2); 
-    // }
+    public function bestreturnstock(Request $request)
+    {      
+        $stock = Stock::all()->where('price','<','50')->take(5); 
+        return response()->json($stock);
+    }
 
 
     public function sectorwisesotock(Request $request)
@@ -141,10 +123,11 @@ class stockmanager extends Controller
         $time_frame = $request->get('time_frame');
         $flag = $request->get('flag');
 
-        if($flag=='true'){
+        if($flag=='true' || $flag== true){
             $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'asc')->get(); 
             return response()->json($query2); 
-        }else if($flag=='false'){
+        }
+        if($flag=='false' || $flag== false){
             $query2 = Stock::where('sector',$sector->toArray())->orderBy($time_frame,'desc')->get(); 
             return response()->json($query2);
         }
