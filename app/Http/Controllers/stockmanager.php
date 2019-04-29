@@ -100,24 +100,21 @@ class stockmanager extends Controller
     {     
         $validator = Validator::make($request->all(), [
             'sector_id' => 'required',
-            'time_frame'=>'required' ,   
-            'exchange' => 'required' 
-        ]);  
+            'time_frame'=>'required' ,
+            'exchange' => 'required'
+        ]); 
+         
         if($validator->fails()) {
             return response()->json([ 'error'=> $validator->messages()], 401);
-        }
+        } 
+
+        $lessthanfifty = Stock::where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->take(10)->get(); 
+        $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->take(10)->get(); 
+        $lessthanhundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10)->get(); 
+        $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->take(10)->get(); 
         
-
-        $lessthanfifty = Stock::all()->where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->take(10); 
-        $fiftytohundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->take(10); 
-        $lessthanhundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10); 
-        $grtthanfivehundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>','500')->take(10); 
-
-        return response()->json(['Fiftyless'=>$lessthanfifty, 'Fiftytohundred'=>$fiftytohundred , 'lessthanhundred'=>$lessthanhundred, 'grtthanfivehundred'=>$grtthanfivehundred]);
-
-       
+        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'lessthanhundred'=> json_decode($lessthanhundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
     }  
-   
     public function sectorwisesotock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
@@ -126,6 +123,9 @@ class stockmanager extends Controller
             'exchange'=>'required' ,
         ]);
         //Flag for low return high return
+
+
+        //Exchage
  
         if($validator->fails()) {
             return response()->json([ 'error'=> $validator->messages()], 401);
