@@ -121,16 +121,14 @@ class stockmanager extends Controller
 
         $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('sector',$sector)->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        // $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        $fiftytohundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        // $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        $hundredtofivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        // $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        $grtthanfivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
         
-        // return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
-        
-
-        return response()->json($lessthanfifty);
+        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
+         
     }  
     public function sectorwisesotock(Request $request)
     {      
