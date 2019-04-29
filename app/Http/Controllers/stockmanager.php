@@ -99,30 +99,38 @@ class stockmanager extends Controller
     public function bestreturnstock(Request $request)
     {     
         $validator = Validator::make($request->all(), [
-            'sector_id' => 'required',
+            'stock_id' => 'required',
             'time_frame'=>'required' ,
             'exchange' => 'required'
         ]); 
          
         if($validator->fails()) {
             return response()->json([ 'error'=> $validator->messages()], 401);
-        } 
+        }   
+         
+        $findsector = Stock::where('id',$request->get('stock_id'))->get();
+        foreach($findsector as $sec){
+                $sector = $sec->sector;
+                $name = $sec->company_name; 
+        }        
 
         // $bridge =  explode('_',$request->get('time_frame')) ;
         // $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
 
         //order by change !
 
-        $lessthanfifty = Stock::where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('sector',$sector)->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        // $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        // $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        // $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
         
-        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
+        // return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
         
+
+        return response()->json($lessthanfifty);
     }  
     public function sectorwisesotock(Request $request)
     {      
@@ -168,7 +176,7 @@ class stockmanager extends Controller
 
         $search = $request->get('searchstring'); 
  
-        $query2 =  Stock::where('company_name', 'like', '%'.$search.'%')->distinct()->get();       
+        $query2 =  Stock::where('company_name', 'like', '%'.$search.'%')->distinct()->get();
 
         if($query2 == '[]'){  
             return response()->json($query2);  
