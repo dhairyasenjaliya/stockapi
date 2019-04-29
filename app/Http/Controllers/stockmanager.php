@@ -108,18 +108,18 @@ class stockmanager extends Controller
             return response()->json([ 'error'=> $validator->messages()], 401);
         } 
 
-        $bridge =  explode('_',$request->get('time_frame')) ;
-        $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
+        // $bridge =  explode('_',$request->get('time_frame')) ;
+        // $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
 
         //order by change !
 
-        $lessthanfifty = Stock::where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->orderBy($chk_price ,'DESC')->take(10)->get(); 
+        $lessthanfifty = Stock::where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($chk_price ,'DESC')->take(10)->get(); 
+        $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($chk_price ,'DESC')->take(10)->get(); 
+        $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
-        $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($chk_price ,'DESC')->take(10)->get(); 
+        $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
         
         return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
         
