@@ -121,8 +121,8 @@ class stockmanager extends Controller
 
         $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($chk_price ,'DESC')->take(10)->get(); 
         
-        // return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
-        return response()->json([$lessthanfifty]);
+        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
+        
     }  
     public function sectorwisesotock(Request $request)
     {      
