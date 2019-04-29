@@ -110,10 +110,10 @@ class stockmanager extends Controller
 
         $lessthanfifty = Stock::where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->take(10)->get(); 
         $fiftytohundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->take(10)->get(); 
-        $lessthanhundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10)->get(); 
+        $hundredtofivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10)->get(); 
         $grtthanfivehundred = Stock::where('exchange',$request->get('exchange'))->where('price','>','500')->take(10)->get(); 
         
-        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'lessthanhundred'=> json_decode($lessthanhundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
+        return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
     }  
     public function sectorwisesotock(Request $request)
     {      
