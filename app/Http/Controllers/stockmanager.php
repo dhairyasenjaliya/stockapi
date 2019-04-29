@@ -97,23 +97,27 @@ class stockmanager extends Controller
 
 
     public function bestreturnstock(Request $request)
-    {    
+    {     
         $validator = Validator::make($request->all(), [
             'sector_id' => 'required',
-            'time_frame'=>'required' ,  // 1_year_price check all in that  
+            'time_frame'=>'required' ,   
             'exchange' => 'required' 
         ]);  
+        if($validator->fails()) {
+            return response()->json([ 'error'=> $validator->messages()], 401);
+        }
+        
 
         $lessthanfifty = Stock::all()->where('exchange',$request->get('exchange'))->where('sector',$request->get('sector_id'))->where('price','>','50')->take(10); 
-
         $fiftytohundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->take(10); 
         $lessthanhundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->take(10); 
         $grtthanfivehundred = Stock::all()->where('exchange',$request->get('exchange'))->where('price','>','500')->take(10); 
 
         return response()->json(['Fiftyless'=>$lessthanfifty, 'Fiftytohundred'=>$fiftytohundred , 'lessthanhundred'=>$lessthanhundred, 'grtthanfivehundred'=>$grtthanfivehundred]);
-        // return response()->json($lessthanfifty);
-    }  
 
+       
+    }  
+   
     public function sectorwisesotock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
