@@ -108,11 +108,11 @@ class stockmanager extends Controller
             return response()->json([ 'error'=> $validator->messages()], 401);
         }   
          
-        $findsector = Stock::where('id',$request->get('stock_id'))->get();
-        foreach($findsector as $sec){
-                $sector = $sec->sector;
-                $name = $sec->company_name; 
-        }        
+        // $findsector = Stock::where('id',$request->get('stock_id'))->get();
+        // foreach($findsector as $sec){
+        //         $sector = $sec->sector;
+        //         $name = $sec->company_name; 
+        // }        
 
         // $bridge =  explode('_',$request->get('time_frame')) ;
         // $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
