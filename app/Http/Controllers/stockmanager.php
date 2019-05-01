@@ -109,8 +109,7 @@ class stockmanager extends Controller
         }   
          
         $findsector = Stock::where('id',$request->get('stock_id'))->get();
-        foreach($findsector as $sec){
-                $sector = $sec->sector;
+        foreach($findsector as $sec){ 
                 $name = $sec->company_name; 
         }        
 
@@ -119,7 +118,7 @@ class stockmanager extends Controller
 
         //order by change !
 
-        $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('sector',$sector)->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
+        $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>','50')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
         $fiftytohundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'DESC')->take(10)->get(); 
 
