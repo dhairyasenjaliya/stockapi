@@ -113,8 +113,8 @@ class stockmanager extends Controller
                 $name = $sec->company_name; 
         }        
 
-        // $bridge =  explode('_',$request->get('time_frame')) ;
-        // $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
+        $bridge =  explode('_',$request->get('time_frame')) ;
+        $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
 
         //order by change !
 
