@@ -137,26 +137,26 @@ class stockmanager extends Controller
             'time_frame'=>'required',
             'exchange'=>'required' ,
         ]);
-        //Flag for low return high return
-
+        //Flag for low return high return 
 
         //Exchage
  
         if($validator->fails()) {
             return response()->json([ 'error'=> $validator->messages()], 401);
         } 
+        
 
         $getsec = $request->get('sector_id');  
         $sector = Sector::where('id',$getsec)->get(['id']);
         
         $time_frame = $request->get('time_frame');
         $flag = $request->get('flag');
-
-        if($flag =='true' || $flag == true){
+ 
+        if($flag === 'true'){  
             $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'desc')->get(); 
             return response()->json($query2); 
         }
-        if($flag =='false' || $flag == false){
+        if($flag === 'false'){  
             $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'asc')->get(); 
             return response()->json($query2);
         }
