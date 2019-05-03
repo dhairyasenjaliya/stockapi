@@ -108,7 +108,7 @@ class stockmanager extends Controller
             return response()->json([ 'error'=> $validator->messages()], 401);
         }   
          
-         $findsector = Stock::where('id',$request->get('stock_id'))->get();
+        $findsector = Stock::where('id',$request->get('stock_id'))->get();
         foreach($findsector as $sec){
                 $sector = $sec->sector;
                 $name = $sec->company_name; 
@@ -145,6 +145,10 @@ class stockmanager extends Controller
             return response()->json([ 'error'=> $validator->messages()], 401);
         } 
         
+        $bridge =  explode('_',$request->get('time_frame')) ;
+        $chk_price = $bridge[0].'_'.$bridge[1] .'_Price';
+
+        
 
         $getsec = $request->get('sector_id');  
         $sector = Sector::where('id',$getsec)->get(['id']);
@@ -153,13 +157,11 @@ class stockmanager extends Controller
         $flag = $request->get('flag');  
  
         if($flag == true){
-            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'desc')->get(); 
-              
+            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'desc')->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);               
             return response()->json($query2); 
         }
         if($flag == false){
-            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'asc')->get(); 
-            dd($query2);
+            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->orderBy($time_frame,'asc')->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]); 
             return response()->json($query2);
         }
     }
