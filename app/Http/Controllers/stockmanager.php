@@ -154,7 +154,7 @@ class stockmanager extends Controller
         $flag = $request->get('flag');  
  
         if($flag == true){
-            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->where($time_frame , '>' , '0')->orderBy($time_frame,'desc')->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
+            $query2 = Stock::where('sector',$sector->toArray())->where('exchange',$request->get('exchange'))->where($time_frame , '>' , '0')->orderBy($time_frame,'asc')->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
             return response()->json($query2); 
         }
         if($flag == false){
