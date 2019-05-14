@@ -17,7 +17,7 @@ class stockmanager extends Controller
   
     public function add(Request $request)
     {  
-        $data = json_encode($request->data ) ;
+        $data = json_encode($request->data );
 
         $val = json_decode($data,true);
 
@@ -118,13 +118,13 @@ class stockmanager extends Controller
 
         //order by change !
 
-        $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>','50')->orderBy($request->get('time_frame') ,'desc')->take(10)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
+        $lessthanfifty = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','<','51')->orderBy($request->get('time_frame') ,'desc')->take(30)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
 
-        $fiftytohundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'desc')->take(10)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
+        $fiftytohundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','51')->where('price','<=','100')->orderBy($request->get('time_frame') ,'desc')->take(30)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
 
-        $hundredtofivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'desc')->take(10)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]); 
+        $hundredtofivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','101')->where('price','<=','500')->orderBy($request->get('time_frame') ,'desc')->take(30)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]); 
 
-        $grtthanfivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>','500')->orderBy($request->get('time_frame') ,'desc')->take(10)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
+        $grtthanfivehundred = Stock::where('company_name', '!=',  $name )->where('exchange',$request->get('exchange'))->where('price','>=','500')->orderBy($request->get('time_frame') ,'desc')->take(30)->get(['id','company_name','exchange','sector',$request->get('time_frame'),$chk_price]);
         
         return response()->json(['lessthanfifty'=>json_decode($lessthanfifty), 'fiftytohundred'=>json_decode($fiftytohundred) ,'hundredtofivehundred'=> json_decode($hundredtofivehundred), 'grtthanfivehundred'=>json_decode($grtthanfivehundred)]);
          
