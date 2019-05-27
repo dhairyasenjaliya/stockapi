@@ -189,6 +189,12 @@ class stockmanager extends Controller
         } 
     } 
 
+    public function removeallstock()
+    {
+        DB::table('stocks')->truncate();
+        return 'Stock Cleared';
+    }
+
     public function searchstock(Request $request)
     {      
         $validator = Validator::make($request->all(), [
