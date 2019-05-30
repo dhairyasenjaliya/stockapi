@@ -192,7 +192,9 @@ class stockmanager extends Controller
     public function removeallstock()
     {
         DB::table('stocks')->truncate();
-        return 'Stock Cleared';
+        DB::table('sectors')->truncate();
+
+        return 'Stocks & Sectors Cleared';
     }
 
     public function searchstock(Request $request)
