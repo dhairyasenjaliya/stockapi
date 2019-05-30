@@ -17,12 +17,10 @@ class stockmanager extends Controller
   
     public function add(Request $request)
     {  
-        $data = json_encode($request->data );
-
-        $val = json_decode($data,true);
-
-        Stock::insert($val);
-
+        $data = json_encode($request->data); 
+        dd($data);
+        $val = json_decode($data,true); 
+        Stock::insert($val);  
         return response()->json(count($val).'--Stock Added');  
     }
 
