@@ -192,8 +192,9 @@ class stockmanager extends Controller
     public function removeallstock()
     {
         DB::table('stocks')->truncate();
-        DB::table('sectors')->truncate();
-
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('sectors')->truncate(); 
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return 'Stocks & Sectors Cleared';
     }
 
