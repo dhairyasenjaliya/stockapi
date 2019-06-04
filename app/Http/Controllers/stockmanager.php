@@ -64,7 +64,7 @@ class stockmanager extends Controller
      
     public function getsector()
     {
-        $data = Sector::all('id','name');
+        $data = Sector::all('id','name')->orderBy('name');
         return response()->json($data);
     }
 
